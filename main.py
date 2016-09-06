@@ -1,8 +1,9 @@
 from flask import Flask, render_template, flash, redirect, jsonify, request
 import urllib2
 import json
-import sys
+import dotenv
 import os
+import sys
 
 
 app=	Flask(__name__, static_url_path='')
@@ -15,7 +16,7 @@ def homepage():
 
 @app.route("/article-summary", methods=["GET"])
 def getArticleSummary():
-	nytAPIKey=	os.getenv("NYT_API_KEY")
+	nytAPIKey=	dotenv.get("NYT_API_KEY")
 	url=		"https://api.nytimes.com/svc/topstories/v2/home.json?api-key="+nytAPIKey
 	response=	urllib2.urlopen(url)
 	data=		json.load(response)
@@ -23,4 +24,5 @@ def getArticleSummary():
 
 
 if __name__=='__main__':
+	dotenv.load()
 	app.run(debug=True)
